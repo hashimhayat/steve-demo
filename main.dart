@@ -1,44 +1,17 @@
-void main() async {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
-  final androidDeviceInfo = await deviceInfo.androidInfo;
-  Sentry.init((options) {
-    options.dsn =
-        'https://f95f8f2560394706b0045a45f105074a@o452924.ingest.sentry.io/5465977';
-    options.release = androidDeviceInfo.version.release;
-    options.dist = androidDeviceInfo.model;
-  });
-
-  GaService.init();
-
   runApp(MyApp());
 }
 
-class MyApp extends StatefulWidget {
-  @override
-  _MyAppState createState() => _MyAppState();
-}
-
-class _MyAppState extends State<MyApp> {
-  @override
-  void initState() {
-    super.initState();
-    FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
-    FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    SystemChrome.setPreferredOrientations([
-      DeviceOrientation.portraitUp,
-      DeviceOrientation.portraitDown
-    ]);
-  }
-
+class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Name to Image',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Name to Image'),
     );
   }
 }
@@ -53,13 +26,9 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
+  final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
+  var _imageUrl;
 
   @override
   Widget build(BuildContext context) {
@@ -67,34 +36,33 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
+      body: Form(
+        key: _formKey,
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Text(
-              'You have pushed the button this many times:',
+          children: [
+            TextFormField(
+              controller: _nameController,
+              decoration: InputDecoration(labelText: 'Name'),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headline4,
+            ElevatedButton(
+              onPressed: () async {
+                if (_formKey.currentState.validate()) {
+                  _imageUrl = await _generateImage(_nameController.text);
+                  setState(() {});
+                }
+              },
+              child: Text('Generate Image'),
             ),
+            if (_imageUrl != null) Image.network(_imageUrl),
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: Icon(Icons.add),
-      ),
     );
   }
-}
 
-class GaService {
-  static GoogleAnalytics _ga;
-
-  static init() async {
-    await GoogleAnalytics.init('UA-ID');
-    _ga = await GoogleAnalytics.instance;
+  Future<String> _generateImage(String name) async {
+    var res = await http.get(Uri.parse('https://api.generated.photos/faces'));
+    var data = jsonDecode(res.body);
+    return data['faces'][0]['url'];
   }
 }
