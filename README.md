@@ -1,39 +1,30 @@
-**README.md**
-
 ## Project X
 
 ### Setup
 
-1. Clone the repository:
 ```
 git clone https://github.com/user/project.git
-```
-
-2. Navigate to the project
-```
 cd project
-```
-
-3. Install dependencies:
-```
-npm install
-```
-
-4. Open the Xcode project:
-```
+flutter pub get
 open project.xcodeproj
 ```
 
 ### Build and Run
 
-5. Build the project in Debug configuration:
+**iOS**
 ```
-xcrun xcodebuild -project project.xcodeproj -target project -configuration Debug
+# Build project in Debug configuration
+flutter build ios --debug
+# Run project on a simulator
+xcrun simctl launch booted project
 ```
 
-6. Run the project on a simulator:
+**Android**
 ```
-xcrun simctl launch booted project
+# Build project in Debug configuration
+flutter build apk --debug
+# Run project on an emulator
+adb install app/build/outputs/apk/debug/app-debug.apk
 ```
 
 ### Flavors
