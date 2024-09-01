@@ -1,31 +1,28 @@
 ```
-import 'package:device_info_plus/device_info_plus.dart';
-import 'package:firebase_analytics/firebase_analytics.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_statusbarcolor/flutter_statusbarcolor.dart';
-import 'package:sentry_flutter/sentry_flutter.dart';
-import 'package:stacked/stacked.dart';
-
-final sentryDsn =
-    'https://47e192f0dba647c3b16a97e9da636927@o557668.ingest.sentry.io/5735578';
-final FirebaseAnalytics analytics = FirebaseAnalytics();
-
+/// The main function of the app.
 Future<void> main() async {
+  /// Initialize Sentry with the specified DSN and release.
   await SentryFlutter.init(
     (options) {
       options.dsn = sentryDsn;
       options.release = "1.0.0+1";
     },
+    /// Run the app after Sentry initialization.
     appRunner: () => runApp(MyApp()),
   );
 }
 
+/// The main widget of the app.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    /// Get the device information.
     final deviceInfo = DeviceInfoPlugin();
     final androidInfo = await deviceInfo.androidInfo;
+
+    /// Set the status bar color.
+    FlutterStatusbarcolor.setStatusBarColor(Colors.blue);
+
     return MaterialApp(
       title: 'Stacked Demo',
       theme: ThemeData(
@@ -37,12 +34,16 @@ class MyApp extends StatelessWidget {
         ),
         body: Column(
           children: <Widget>[
+            /// Display a text.
             Text('Hello, world!'),
+
+            /// Create a gesture detector with a blue container.
             SizedBox.square(
               dimension: 100,
               child: GestureDetector(
                 behavior: HitTestBehavior.opaque,
                 onTap: () {
+                  /// Log an event to Firebase Analytics.
                   analytics.logEvent(name: 'button_tapped');
                 },
                 child: Container(
