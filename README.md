@@ -1,6 +1,6 @@
 ## Project Name and Description
 
-**YourProject** is a Flutter project that provides [brief description of the project].
+**Project X** is a Flutter project that provides [brief description of the project].
 
 ## Getting Started
 
