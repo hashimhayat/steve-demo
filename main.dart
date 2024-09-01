@@ -1,4 +1,3 @@
-/// The main function of the app.
 Future<void> main() async {
   await runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
@@ -18,7 +17,6 @@ Future<void> main() async {
   });
 }
 
-/// The main widget of the app.
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -67,4 +65,3 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-```
