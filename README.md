@@ -1,1 +1,4 @@
-Project X
+- Clone the project.
+- Install dependencies.
+- Open the project in IDE.
+- Build and run the app.
