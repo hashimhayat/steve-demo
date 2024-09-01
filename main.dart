@@ -2,14 +2,12 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final DeviceInfoPlugin deviceInfo = DeviceInfoPlugin();
   final androidDeviceInfo = await deviceInfo.androidInfo;
-  Sentry.init(
-    (options) {
-      options.dsn =
-          'https://f95f8f2560394706b0045a45f105074a@o452924.ingest.sentry.io/5465977';
-      options.release = androidDeviceInfo.version.release;
-      options.dist = androidDeviceInfo.model;
-    },
-  );
+  Sentry.init((options) {
+    options.dsn =
+        'https://f95f8f2560394706b0045a45f105074a@o452924.ingest.sentry.io/5465977';
+    options.release = androidDeviceInfo.version.release;
+    options.dist = androidDeviceInfo.model;
+  });
 
   GaService.init();
 
@@ -27,8 +25,10 @@ class _MyAppState extends State<MyApp> {
     super.initState();
     FlutterStatusbarcolor.setStatusBarColor(Colors.transparent);
     FlutterStatusbarcolor.setStatusBarWhiteForeground(false);
-    SystemChrome.setPreferredOrientations(
-        [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
+    SystemChrome.setPreferredOrientations([
+      DeviceOrientation.portraitUp,
+      DeviceOrientation.portraitDown
+    ]);
   }
 
   @override
@@ -89,6 +89,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
 class GaService {
   static GoogleAnalytics _ga;
 
